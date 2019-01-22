@@ -79,6 +79,16 @@ awk -F,  '{print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c
     ```
 Do **not** put this text file `pride_and_prejudice.txt` in Git. Using a `for` loop, how would you tabulate the number of times each of the four characters is mentioned?
 
+```{bash include=FALSE}
+   curl https://www.gutenberg.org/files/1342/1342.txt > pride_and_prejudice.txt
+```
+
+```{bash}
+  for character in {"Elizabeth" "Jane" "Lydia" "Darcy"}
+    awk -F,  '{print $character}' pride_and_prejudice.tx | sort | uniq -c 
+  done 
+```
+
 0. What's the difference between the following two commands?
     ```{bash eval=FALSE}
     echo 'hello, world' > test1.txt
@@ -87,6 +97,8 @@ Do **not** put this text file `pride_and_prejudice.txt` in Git. Using a `for` lo
     ```{bash eval=FALSE}
     echo 'hello, world' >> test2.txt
     ```
+The first command with ">"" menas directing output "hello, world" to text1.txt.
+The second commmand with ">>""menas appends output "hello,world" to text2.txt.
 
 0. Using your favorite text editor (e.g., `vi`), type the following and save the file as `middle.sh`:
     ```{bash eval=FALSE}
