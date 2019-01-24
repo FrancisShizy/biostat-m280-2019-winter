@@ -114,6 +114,10 @@ Using `chmod` make the file executable by the owner, and run
     ```
 Explain the output. Explain the meaning of `"$1"`, `"$2"`, and `"$3"` in this shell script. Why do we need the first line of the shell script?
 
+The output is that read the first 20 lines of the file "pride_and_prejudice.txt" and then read the last 5 lines of the 20 lines.
+The meaning of "$1" is the filename, "pride_and_prejudice.txt"; "$2" is "20"; "$3" is "5".
+The first line of the shell script tells the file is "./~.sh" format file.
+
 ## Q4. R Batch Run
 
 In class we discussed using R to organize simulation studies. 
@@ -123,6 +127,19 @@ $$
   \frac{\sum_{r=1}^{\text{rep}} (\widehat \mu_r - \mu_{\text{true}})^2}{\text{rep}}
 $$
 for both methods.
+
+```{bash}
+R CMD BATCH '--args seed=123 n=100 dist="gaussian" rep=20' /home/zyshi/Hua-Zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/runSim.R
+```
+
+```{bash}
+R CMD BATCH '--args seed=123 n=100 dist="t1" rep=20' /home/zyshi/Hua-Zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/runSim.R
+```
+
+```{bash}
+R CMD BATCH '--args seed=123 n=100 dist="t5" rep=20' /home/zyshi/Hua-Zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/runSim.R
+```
+
 
 2. Modify the [`autoSim.R`](http://hua-zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/autoSim.R) script to run simulations with combinations of sample sizes `nVals = seq(100, 500, by=100)` and distributions `distTypes = c("gaussian", "t1", "t5")` and write output to appropriately named files. Use `rep = 50`, and `seed = 280`. 
 
