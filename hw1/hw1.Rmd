@@ -85,9 +85,9 @@ Do **not** put this text file `pride_and_prejudice.txt` in Git. Using a `for` lo
 ```
 
 ```{bash}
-  for character in {"Elizabeth" "Jane" "Lydia" "Darcy"}
-    awk -F,  '{print $character}' pride_and_prejudice.tx | sort | uniq -c 
-  done 
+  for character in { 'Elizabeth' 'Jane' 'Lydia' 'Darcy' }
+  do grep -o $character /home/zyshi/biostat-m280-2019-winter/hw1/pride_and_prejudice.txt | uniq -c
+  done
 ```
 
 0. What's the difference between the following two commands?
