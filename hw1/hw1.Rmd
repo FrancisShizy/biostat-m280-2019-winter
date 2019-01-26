@@ -1,6 +1,6 @@
 ---
 title: "Biostat M280 Homework 1"
-author: "Zanyu Shi <zyshi@g.ucla.edu>"
+author: "Zanyu Shi UID: 805228169 <zyshi@g.ucla.edu>"
 subtitle: Due Jan 25 @ 11:59PM
 output: html_document
 ---
@@ -93,6 +93,8 @@ Do **not** put this text file `pride_and_prejudice.txt` in Git. Using a `for` lo
     ```{bash eval=FALSE}
     echo 'hello, world' >> test2.txt
     ```
+    
+    **Solution**
 The first command with ">"" menas directing output "hello, world" to text1.txt, which means the a file named "text1.txt" will be created and "hello, world" will be written in this file.
 The second commmand with ">>""menas appends output "hello,world" to text2.txt.
 
