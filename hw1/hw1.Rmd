@@ -33,23 +33,14 @@ Please, do **not** put these data files into Git; they are big. Also do **not** 
 
   **Solution**
 ```{bash}
-head /home/m280data/NYCHVS/NYCHVS_1991.csv 
+head -n 5 /home/m280data/NYCHVS/NYCHVS_1991.csv 
 ```
 
 1. Display number of lines in each `csv` file.
 
   **Solution**
 ```{bash}
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_1991.csv 
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_1993.csv
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_1996.csv
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_1999.csv
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_2002.csv
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_2005.csv
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_2008.csv
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_2011.csv
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_2014.csv
-awk 'END { print NR }' /home/m280data/NYCHVS/NYCHVS_2017.csv 
+wc -l /home/m280data/NYCHVS/*.csv
 ```
 
 0. Display the 3 files that have the least number of lines
@@ -74,7 +65,8 @@ The bash script lists all the .csv files in the folder pathway '/home/m280data/N
   
   **Solution**
 ```{bash}
-awk -F,  '{print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c 
+tail -n +3 /home/m280data/NYCHVS/NYCHVS_1991.csv | awk -F, '{print $2}' | 
+  sort | uniq -c 
 ```
 
 
@@ -86,14 +78,10 @@ awk -F,  '{print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c
     ```
 Do **not** put this text file `pride_and_prejudice.txt` in Git. Using a `for` loop, how would you tabulate the number of times each of the four characters is mentioned?
 
-```{bash include=FALSE}
-   curl https://www.gutenberg.org/files/1342/1342.txt > pride_and_prejudice.txt
-```
-
+  **Solution**
 ```{bash}
   for character in { 'Elizabeth' 'Jane' 'Lydia' 'Darcy' }
-  do grep -o $character 
-  /home/zyshi/biostat-m280-2019-winter/hw1/pride_and_prejudice.txt | uniq -c
+  do grep -o $character pride_and_prejudice.txt | uniq -c
   done
 ```
 
@@ -105,7 +93,7 @@ Do **not** put this text file `pride_and_prejudice.txt` in Git. Using a `for` lo
     ```{bash eval=FALSE}
     echo 'hello, world' >> test2.txt
     ```
-The first command with ">"" menas directing output "hello, world" to text1.txt.
+The first command with ">"" menas directing output "hello, world" to text1.txt, which means the a file named "text1.txt" will be created and "hello, world" will be written in this file.
 The second commmand with ">>""menas appends output "hello,world" to text2.txt.
 
 0. Using your favorite text editor (e.g., `vi`), type the following and save the file as `middle.sh`:
@@ -120,10 +108,13 @@ Using `chmod` make the file executable by the owner, and run
     ./middle.sh pride_and_prejudice.txt 20 5
     ```
 Explain the output. Explain the meaning of `"$1"`, `"$2"`, and `"$3"` in this shell script. Why do we need the first line of the shell script?
-**Expalin**
+
+   **Expalin**
+   
 The output is that read the first 20 lines of the file "pride_and_prejudice.txt" and then read the last 5 lines of the 20 lines.
 The meaning of "$1" is the filename, "pride_and_prejudice.txt"; "$2" is "20"; "$3" is "5".
-The first line of the shell script tells the file is "./~.sh" format file.
+The first line of the shell script tells the file is "./~.sh" format script, without the first line, the bash script is not able to be executable.
+
 
 ## Q4. R Batch Run
 
@@ -135,34 +126,34 @@ $$
 $$
 for both methods.
 
-   **Solution:**
+   **Solution:** Here is my "runSim.R" code:
 ```{bash}
 cat runSim.R
 ```
 
    
 ```{bash}
-Rscript runSim.R seed=123 n=100 dist=\"gaussian\" rep=100
+Rscript runSim.R seed=123 n=100 dist=\"gaussian\" reps=100
 ```
 
 ```{bash}
-Rscript runSim.R  seed=123 n=100 dist=\"t1\" rep=100
+Rscript runSim.R  seed=123 n=100 dist=\"t1\" reps=100
 ```
 
 ```{bash}
-Rscript runSim.R  seed=123 n=100 dist=\"t5\" rep=100
+Rscript runSim.R  seed=123 n=100 dist=\"t5\" reps=100
 ```
 
 
 2. Modify the [`autoSim.R`](http://hua-zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/autoSim.R) script to run simulations with combinations of sample sizes `nVals = seq(100, 500, by=100)` and distributions `distTypes = c("gaussian", "t1", "t5")` and write output to appropriately named files. Use `rep = 50`, and `seed = 280`. 
 
-    **Solution:** Here id my "autoSim.R" code:
+    **Solution:** Here is my "autoSim.R" code:
 ```{bash}
  cat autoSim.R 
 ```
 
 ```{bash}
-Rscript autoSim.R 
+Rscript autoSim.R seed=280 reps=50 
 ```
 
 3. Write an R script to collect simulation results from output files and print average MSEs in a table of format
@@ -181,8 +172,30 @@ Rscript autoSim.R
 | 500 | SampAvg  |       |       |          |
 
  **solution**
-```{bash}
-Rscript Q4_3_code.R
+ 
+```{r}
+nVals = seq(100, 500, by = 100)
+distTypes = c("gaussian", "t5", "t1")
+method = rep(c("PrimeAvg", "SampAvg"), 5)
+results <- c()
+N <- c()
+for (dist in distTypes){
+  for (n in nVals){
+    oFile <- paste("/home/zyshi/biostat-m280-2019-winter/hw1/n", n, 
+                   "dist", dist, ".txt", sep="")
+    testr <- read.table(oFile)
+    results <- c(results, testr[,3])
+    results <- c(results, testr[,2])
+  }
+}
+
+for (n in nVals){
+  N <- c(N, rep(n,2))
+}
+
+results_table <- data.frame(n = N, Method=method, Gaussian= results[1:10],
+                            t_5= results[11:20], t_1= results[21:30])
+results_table
 ```
  
  
