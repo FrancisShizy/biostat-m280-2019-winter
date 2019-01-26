@@ -93,6 +93,8 @@ Do **not** put this text file `pride_and_prejudice.txt` in Git. Using a `for` lo
     ```{bash eval=FALSE}
     echo 'hello, world' >> test2.txt
     ```
+    
+    **Solution**
 The first command with ">"" menas directing output "hello, world" to text1.txt, which means the a file named "text1.txt" will be created and "hello, world" will be written in this file.
 The second commmand with ">>""menas appends output "hello,world" to text2.txt.
 
