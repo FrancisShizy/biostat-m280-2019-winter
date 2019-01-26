@@ -181,7 +181,7 @@ results <- c()
 N <- c()
 for (dist in distTypes){
   for (n in nVals){
-    oFile <- paste("/home/zyshi/biostat-m280-2019-winter/hw1/n", n, 
+    oFile <- paste(path = "/home/zyshi/biostat-m280-2019-winter/hw1/n", n, 
                    "dist", dist, ".txt", sep="")
     testr <- read.table(oFile)
     results <- c(results, testr[,3])
