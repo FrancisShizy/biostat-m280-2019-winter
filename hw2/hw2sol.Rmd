@@ -23,3 +23,5 @@ fizzbuzz(dat)
 ```
 **Implementation**
 Generally, we need creat a fuction "fizzbuzz" to describe the requirements correctly. First, a **for** loop is neeeded to choose every input value in a list of numbers. Within the **for** loop, there are four cases with each **if** phrase to realize it. In the first case, if the input is a multible of both three and five, print "FizzBuzz"; if the number is a multible of five, print "Buzz"; if the number is a multible of three, print "Fizz"; For other numbers, print the original values.
+
+## Q3.Rcpp
