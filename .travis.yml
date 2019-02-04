@@ -1,6 +1,5 @@
 nguage: r
 sudo: false
-script: make bacon
 cache: packages
 r_packages:
   - rmarkdown
@@ -18,3 +17,4 @@ r_packages:
 os:
   - linux
   - osx
+
