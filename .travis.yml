@@ -1,1 +1,13 @@
 language: r
+sudo: false
+script: make hw2sol
+cache: packages
+r_packages:
+  - rmarkdown
+  - Rcpp
+os:
+  - linux
+  - osx
+r:
+  - oldrel
+  - release
