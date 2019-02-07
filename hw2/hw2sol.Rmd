@@ -34,7 +34,7 @@ Generally, we need creat a fuction "fizzbuzz" to describe the requirements corre
 ## Q3.Rcpp
 Re-do FizzBuzz test using Rcpp.
 
-```{r}
+```{r eval = FALSE}
 library("Rcpp")
 fizzbuzz<-
 '#include <Rcpp.h>
@@ -42,6 +42,7 @@ fizzbuzz<-
 #include <vector>
 using namespace Rcpp;
 using namespace std;
+// [[Rcpp::plugins("cpp11")]]
 // [[Rcpp::export]]
 void fizzbuzz(vector<int> numbers)
 {
