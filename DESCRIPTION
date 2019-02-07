@@ -1,12 +1,8 @@
 Title: M280 Homework 2 Solution.
 Version: 1.10
 Date: 2019-02-05
-Author: Zanyu Shi [aut, cre]
+Author: Zanyu Shi
 Description:Homework 2 of M280, using Travis CI test and Rccp to write code for 
 Fizzbuzz problem.
-URL: https://github.com/FrancisShizy/biostat-m280-2019-winter.git
-Depends:
-    R (>= 2.10)
-Imports:
-    rmarkdown,
-    Rccp
+
+
