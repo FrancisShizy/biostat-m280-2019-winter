@@ -16,18 +16,52 @@ Status](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter.svg?token=cz
 ## Q2.FizzBuzz Test
 The R Script is showed as below: 
 ```{r}
-fizzbuzz <- function(x){
-  for (i in x){
-    if (i %% 3 == 0 & i %% 5 == 0) {print("FizzBuzz")}
-      else if (i %% 5 == 0){print("Buzz")}
-      else if (i %% 3 == 0){print("Fizz")}
-      else print(i)
-  }
+finteger <- function(i){
+  if (i %% 3 == 0 & i %% 5 == 0) {print("FizzBuzz")}
+  else if (i %% 5 == 0){print("Buzz")}
+  else if (i %% 3 == 0){print("Fizz")}
+  else print(i)
 }
 
-dat <- c(1:100)
-fizzbuzz(dat)
+checkf <- function(x){
+  if (is.numeric(x) != 1 | is.na(x) == 1 | is.infinite(x) == 1 | x %% 1 != 0) {
+    return (0)
+  }
+  else {return (1)}
+}
+
+FizzBuzz <- function(x){
+    if (is.numeric(x) != 1) {
+    print("The input contains non-numeric values.")
+    }
+  else if (is.numeric(x) == 1){ 
+    for (i in x){
+      if (checkf(i) == 1){
+        finteger(i)
+      }
+     else if (checkf(i) == 0){
+       print("This is not an integer number")
+     } 
+    }
+  }
+}  
+
+dat1 <- c(1:100)
+FizzBuzz(dat1)
 ```
+
+```{r}
+dat2 <- c(1, 2, 3, 4, 5, "a", 15) 
+FizzBuzz(dat2)
+
+```
+
+```{r}
+dat3 <- c(1, 2, 3, 5.4, 4, 5, 15)
+FizzBuzz(dat3)
+```
+
+
 **Implementation**
 Generally, we need creat a fuction "fizzbuzz" to describe the requirements correctly. First, a **for** loop is neeeded to choose every input value in a list of numbers. Within the **for** loop, there are four cases with each **if** phrase to realize it. In the first case, if the input is a multible of both three and five, print "FizzBuzz"; if the number is a multible of five, print "Buzz"; if the number is a multible of three, print "Fizz"; For other numbers, print the original values.
 
