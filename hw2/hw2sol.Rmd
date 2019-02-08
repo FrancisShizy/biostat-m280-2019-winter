@@ -1,62 +1,103 @@
 ---
 title: "Biostat M280 Homework 2 Solution"
-author: "Zanyu Shi UID: 805228169 <zyshi@g.ucla.edu>"
+author: 'Zanyu Shi UID: 805228169 <zyshi@g.ucla.edu>'
 subtitle: Due Feb 8 @ 11:59PM
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
+Develop branch build status:[![Build
+Status](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter.svg?token=czbMzfzh9oUt4VD3defU&branch=develop)](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter)
+
+Master branch build status:[![Build
+Status](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter.svg?token=czbMzfzh9oUt4VD3defU&branch=master)](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter)
 
 ## Q2.FizzBuzz Test
 The R Script is showed as below: 
 ```{r}
-fizzbuzz <- function(x){
-  for (i in x){
-    if (i %% 3 == 0 & i %% 5 == 0) {print("FizzBuzz")}
-      else if (i %% 5 == 0){print("Buzz")}
-      else if (i %% 3 == 0){print("Fizz")}
-      else print(i)
-  }
+finteger <- function(i){
+  if (i %% 3 == 0 & i %% 5 == 0) {print("FizzBuzz")}
+  else if (i %% 5 == 0){print("Buzz")}
+  else if (i %% 3 == 0){print("Fizz")}
+  else print(i)
 }
 
-dat <- c(1:100)
-fizzbuzz(dat)
+checkf <- function(x){
+  if (is.numeric(x) != 1 | is.na(x) == 1 | is.infinite(x) == 1 | x %% 1 != 0) {
+    return (0)
+  }
+  else {return (1)}
+}
+
+FizzBuzz <- function(x){
+    if (is.numeric(x) != 1) {
+    print("The input contains non-numeric values.")
+    }
+  else if (is.numeric(x) == 1){ 
+    for (i in x){
+      if (checkf(i) == 1){
+        finteger(i)
+      }
+     else if (checkf(i) == 0){
+       print("This is not an integer number")
+     } 
+    }
+  }
+}  
+
+dat1 <- c(1:100)
+FizzBuzz(dat1)
 ```
+
+```{r}
+dat2 <- c(1, 2, 3, 4, 5, "a", 15) 
+FizzBuzz(dat2)
+
+```
+
+```{r}
+dat3 <- c(1, 2, 3, 5.4, 4, 5, 15)
+FizzBuzz(dat3)
+```
+
+
 **Implementation**
 Generally, we need creat a fuction "fizzbuzz" to describe the requirements correctly. First, a **for** loop is neeeded to choose every input value in a list of numbers. Within the **for** loop, there are four cases with each **if** phrase to realize it. In the first case, if the input is a multible of both three and five, print "FizzBuzz"; if the number is a multible of five, print "Buzz"; if the number is a multible of three, print "Fizz"; For other numbers, print the original values.
 
 ## Q3.Rcpp
 Re-do FizzBuzz test using Rcpp.
-
-```{r}
-library("Rcpp")
-fizzbuzz<-
-'#include <Rcpp.h>
-#include <iostream>
-#include <vector>
-using namespace Rcpp;
-using namespace std;
-// [[Rcpp::export]]
-void fizzbuzz(vector<int> numbers)
-{
+  
+```{r eval = FALSE}
+  library("Rcpp")
+  fizzbuzz<-
+    '#include <Rcpp.h>
+  #include <iostream>
+  #include <vector>
+  using namespace Rcpp;
+  using namespace std;
+  // [[Rcpp::plugins("cpp11")]]
+  // [[Rcpp::export]]
+  void fizzbuzz(vector<int> numbers)
+  {
   for(unsigned int j = 0; j < numbers.size(); j++) {
-int number = numbers[j];
-      if( number%15 == 0) {
-        cout << "FizzBuzz" << endl; 
-      }
-      else if(number%5 == 0 ){
-        cout << "Buzz" << endl; 
-      }
-      else if(number%3 == 0) {
-        cout << "Fizz" << endl;
-      }
-      else {
-        cout<<number<< endl;
-cout << endl;
-    }
+  int number = numbers[j];
+  if( number%15 == 0) {
+  cout << "FizzBuzz" << endl; 
   }
-}'
+  else if(number%5 == 0 ){
+  cout << "Buzz" << endl; 
+  }
+  else if(number%3 == 0) {
+  cout << "Fizz" << endl;
+  }
+  else {
+  cout<<number<< endl;
+  }
+  }
+  }'
 
-Rcpp::cppFunction(fizzbuzz)
-fizzbuzz(1:100)
+  sourceCpp(code = fizzbuzz)
+  fizzbuzz(1:100)
 ```
 
