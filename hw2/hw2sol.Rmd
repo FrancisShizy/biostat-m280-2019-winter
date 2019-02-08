@@ -16,6 +16,7 @@ Status](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter.svg?token=cz
 ## Q2.FizzBuzz Test
 The R Script is showed as below: 
 ```{r}
+#function that outputs the required results when giving valid inputing
 finteger <- function(i){
   if (i %% 3 == 0 & i %% 5 == 0) {print("FizzBuzz")}
   else if (i %% 5 == 0){print("Buzz")}
@@ -23,6 +24,7 @@ finteger <- function(i){
   else print(i)
 }
 
+#fuction that validates any input and give a sane response to any invalid input
 checkf <- function(x){
   if (is.numeric(x) != 1 | is.na(x) == 1 | is.infinite(x) == 1 | x %% 1 != 0) {
     return (0)
@@ -30,6 +32,7 @@ checkf <- function(x){
   else {return (1)}
 }
 
+#creat a fuction "FizzBuzz" to describe the question correctly
 FizzBuzz <- function(x){
     if (is.numeric(x) != 1) {
     print("The input contains non-numeric values.")
@@ -62,8 +65,10 @@ FizzBuzz(dat3)
 ```
 
 
-**Implementation**
-Generally, we need creat a fuction "fizzbuzz" to describe the requirements correctly. First, a **for** loop is neeeded to choose every input value in a list of numbers. Within the **for** loop, there are four cases with each **if** phrase to realize it. In the first case, if the input is a multible of both three and five, print "FizzBuzz"; if the number is a multible of five, print "Buzz"; if the number is a multible of three, print "Fizz"; For other numbers, print the original values.
+**Implementation of "FizzBuzz" function **
+Generally, we need creat a fuction "FizzBuzz" to describe the requirements of this question correctly. 
+Before write the final "FizzBuzz" function, we need two basic functions to realize different aims. One is "finteger" function, which outputs the required results when giving valid inputing: if the input is a multible of both three and five, print "FizzBuzz"; if the number is a multible of five, print "Buzz"; if the number is a multible of three, print "Fizz"; for other numbers, print the original values. The other one is "checkf" function, which validates any numeric input and give a sane response to any invalid numeric input, for example, non-integeric number. 
+Then, we creat the "FizzBuzz" function. First, a **if** phrase is need to judge whether the input is numeric or not. If the input is not numeric, output **"The input contains non-numeric values"**. If the input is numeric, execute a **for** loop which chooses every input value in a list of numbers. Within the **for** loop, use **if** phrase and "checkf" function to judge whether the input is a integer input or not. If the numeric input is integer, use "finteger" function to realize the "FizzBuzz" classification; if the numeric input is not integer, print "This is not an integer number".
 
 ## Q3.Rcpp
 Re-do FizzBuzz test using Rcpp.
