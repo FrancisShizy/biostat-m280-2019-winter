@@ -49,18 +49,31 @@ FizzBuzz <- function(x){
   }
 }  
 
+```
+
+**Good input: all integer input (vector)**
+```{r}
 dat1 <- c(1:100)
 FizzBuzz(dat1)
 ```
 
+**Good input: scalar integer input**
+```{r}
+FizzBuzz(3)
+FizzBuzz(5)
+FizzBuzz(15)
+```
+
+**Bad input: input contains non-numeric values **
 ```{r}
 dat2 <- c(1, 2, 3, 4, 5, "a", 15) 
 FizzBuzz(dat2)
 
 ```
 
+**Bad input: numeric input contains non-integer values **
 ```{r}
-dat3 <- c(1, 2, 3, 5.4, 4, 5, 15)
+dat3 <- c(1, 2, 3, 4, 5, 5.4, 6, 6.5, 7, 7.8, 15)
 FizzBuzz(dat3)
 ```
 
@@ -74,8 +87,9 @@ Then, we creat the "FizzBuzz" function. First, a **if** phrase is need to judge 
 Re-do FizzBuzz test using Rcpp.
   
 ```{r eval = FALSE}
-  library("Rcpp")
-  fizzbuzz<-
+#write C++ code as a string into R
+library("Rcpp")
+fizzbuzz<-
     '#include <Rcpp.h>
   #include <iostream>
   #include <vector>
@@ -99,10 +113,55 @@ Re-do FizzBuzz test using Rcpp.
   else {
   cout<<number<< endl;
   }
-  }
-  }'
+ }
+}'
 
-  sourceCpp(code = fizzbuzz)
-  fizzbuzz(1:100)
+#use Rcpp
+sourceCpp(code = fizzbuzz)
+
+#wirte fizzbuzz code which detect various input   
+FizzBuzzcpp <- function(x){
+    if (is.numeric(x) != 1) {
+    print("The input contains non-numeric values.")
+    }
+  else if (is.numeric(x) == 1){ 
+    for (i in x){
+      if (checkf(i) == 1){
+        cat(fizzbuzz(i))
+      }
+     else if (checkf(i) == 0){
+       print("This is not an integer number")
+     } 
+    }
+  }
+}  
+  
+dat3 <- c(1, 2, 3, 4, 5, 5.4, 5.5, 7.8, 15)
+FizzBuzzcpp(dat3)
 ```
 
+**Good input: all integer input in a vector**
+```{r}
+dat1 <- c(1:100)
+FizzBuzzcpp(dat1)
+```
+
+**Good input: scalar integer input**
+```{r}
+FizzBuzzcpp(3)
+FizzBuzzcpp(5)
+FizzBuzzcpp(15)
+```
+
+**Bad input: input contains non-numeric values **
+```{r}
+dat2 <- c(1, 2, 3, 4, 5, "a", 15) 
+FizzBuzzcpp(dat2)
+
+```
+
+**Bad input: numeric input contains non-integer values **
+```{r}
+dat3 <- c(1, 2, 3, 4, 5, 5.4, 6, 6.5, 7, 7.8, 15)
+FizzBuzzcpp(dat3)
+```
