@@ -4,7 +4,6 @@ author: 'Zanyu Shi UID: 805228169 <zyshi@g.ucla.edu>'
 subtitle: Due Feb 8 @ 11:59PM
 output:
   html_document: default
-  pdf_document: default
 ---
 
 Develop branch build status:[![Build
