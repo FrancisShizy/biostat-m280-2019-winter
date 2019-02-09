@@ -227,9 +227,9 @@ FizzBuzz &lt;- function(x){
      } 
     }
   }
-}  
-
-dat1 &lt;- c(1:100)
+}  </code></pre>
+<p><strong>Good input: all integer input (vector)</strong></p>
+<pre class="r"><code>dat1 &lt;- c(1:100)
 FizzBuzz(dat1)</code></pre>
 <pre><code>## [1] 1
 ## [1] 2
@@ -331,25 +331,39 @@ FizzBuzz(dat1)</code></pre>
 ## [1] 98
 ## [1] &quot;Fizz&quot;
 ## [1] &quot;Buzz&quot;</code></pre>
+<p><strong>Good input: scalar integer input</strong></p>
+<pre class="r"><code>FizzBuzz(3)</code></pre>
+<pre><code>## [1] &quot;Fizz&quot;</code></pre>
+<pre class="r"><code>FizzBuzz(5)</code></pre>
+<pre><code>## [1] &quot;Buzz&quot;</code></pre>
+<pre class="r"><code>FizzBuzz(15)</code></pre>
+<pre><code>## [1] &quot;FizzBuzz&quot;</code></pre>
+<p><strong>Bad input: input contains non-numeric values </strong></p>
 <pre class="r"><code>dat2 &lt;- c(1, 2, 3, 4, 5, &quot;a&quot;, 15) 
 FizzBuzz(dat2)</code></pre>
 <pre><code>## [1] &quot;The input contains non-numeric values.&quot;</code></pre>
-<pre class="r"><code>dat3 &lt;- c(1, 2, 3, 5.4, 4, 5, 15)
+<p><strong>Bad input: numeric input contains non-integer values </strong></p>
+<pre class="r"><code>dat3 &lt;- c(1, 2, 3, 4, 5, 5.4, 6, 6.5, 7, 7.8, 15)
 FizzBuzz(dat3)</code></pre>
 <pre><code>## [1] 1
 ## [1] 2
 ## [1] &quot;Fizz&quot;
-## [1] &quot;This is not an integer number&quot;
 ## [1] 4
 ## [1] &quot;Buzz&quot;
+## [1] &quot;This is not an integer number&quot;
+## [1] &quot;Fizz&quot;
+## [1] &quot;This is not an integer number&quot;
+## [1] 7
+## [1] &quot;This is not an integer number&quot;
 ## [1] &quot;FizzBuzz&quot;</code></pre>
 <p><strong>Implementation of “FizzBuzz” function </strong> Generally, we need creat a fuction “FizzBuzz” to describe the requirements of this question correctly. Before write the final “FizzBuzz” function, we need two basic functions to realize different aims. One is “finteger” function, which outputs the required results when giving valid inputing: if the input is a multible of both three and five, print “FizzBuzz”; if the number is a multible of five, print “Buzz”; if the number is a multible of three, print “Fizz”; for other numbers, print the original values. The other one is “checkf” function, which validates any numeric input and give a sane response to any invalid numeric input, for example, non-integeric number. Then, we creat the “FizzBuzz” function. First, a <strong>if</strong> phrase is need to judge whether the input is numeric or not. If the input is not numeric, output <strong>“The input contains non-numeric values”</strong>. If the input is numeric, execute a <strong>for</strong> loop which chooses every input value in a list of numbers. Within the <strong>for</strong> loop, use <strong>if</strong> phrase and “checkf” function to judge whether the input is a integer input or not. If the numeric input is integer, use “finteger” function to realize the “FizzBuzz” classification; if the numeric input is not integer, print “This is not an integer number”.</p>
 </div>
 <div id="q3.rcpp" class="section level2">
 <h2>Q3.Rcpp</h2>
 <p>Re-do FizzBuzz test using Rcpp.</p>
-<pre class="r"><code>  library(&quot;Rcpp&quot;)
-  fizzbuzz&lt;-
+<pre class="r"><code>#write C++ code as a string into R
+library(&quot;Rcpp&quot;)
+fizzbuzz&lt;-
     '#include &lt;Rcpp.h&gt;
   #include &lt;iostream&gt;
   #include &lt;vector&gt;
@@ -373,11 +387,30 @@ FizzBuzz(dat3)</code></pre>
   else {
   cout&lt;&lt;number&lt;&lt; endl;
   }
-  }
-  }'
+ }
+}'
 
-  sourceCpp(code = fizzbuzz)
-  fizzbuzz(1:100)</code></pre>
+#use Rcpp
+sourceCpp(code = fizzbuzz)
+
+#wirte fizzbuzz code which detect various input   
+FizzBuzzcpp &lt;- function(x){
+    if (is.numeric(x) != 1) {
+    print(&quot;The input contains non-numeric values.&quot;)
+    }
+  else if (is.numeric(x) == 1){ 
+    for (i in x){
+      if (checkf(i) == 1){
+        cat(fizzbuzz(i))
+      }
+     else if (checkf(i) == 0){
+       print(&quot;This is not an integer number&quot;)
+     } 
+    }
+  }
+}  
+
+FizzBuzzcpp(1:100)</code></pre>
 </div>
 
 
