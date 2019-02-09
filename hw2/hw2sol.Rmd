@@ -146,20 +146,20 @@ FizzBuzzcpp(dat1)
 ```
 
 **Good input: scalar integer input**
-```{r include = FALSE}
+```{r}
 FizzBuzzcpp(3)
 FizzBuzzcpp(5)
 FizzBuzzcpp(15)
 ```
 
 **Bad input: input contains non-numeric values **
-```{r include = FALSE}
+```{r}
 dat2 <- c(1, 2, 3, 4, 5, "a", 15) 
 FizzBuzzcpp(dat2)
 ```
 
 **Bad input: numeric input contains non-integer values **
-```{r include = FALSE}
+```{r}
 dat3 <- c(1, 2, 3, 4, 5, 5.4, 6, 6.5, 7, 7.8, 15)
 FizzBuzzcpp(dat3)
 ```
