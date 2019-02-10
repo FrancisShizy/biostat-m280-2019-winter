@@ -1,0 +1,165 @@
+---
+title: "Biostat M280 Homework 2 Solution"
+author: 'Zanyu Shi UID: 805228169 <zyshi@g.ucla.edu>'
+subtitle: Due Feb 8 @ 11:59PM
+output:
+  html_document: default
+---
+
+Develop branch build status:[![Build
+Status](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter.svg?token=czbMzfzh9oUt4VD3defU&branch=develop)](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter)
+
+Master branch build status:[![Build
+Status](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter.svg?token=czbMzfzh9oUt4VD3defU&branch=master)](https://travis-ci.com/FrancisShizy/biostat-m280-2019-winter)
+
+## Q2.FizzBuzz Test
+The R Script is showed as below: 
+```{r}
+#function that outputs the required results when giving valid inputing
+finteger <- function(i){
+  if (i %% 3 == 0 & i %% 5 == 0) {print("FizzBuzz")}
+  else if (i %% 5 == 0){print("Buzz")}
+  else if (i %% 3 == 0){print("Fizz")}
+  else print(i)
+}
+
+#fuction that validates any input and give a sane response to any invalid input
+checkf <- function(x){
+  if (is.numeric(x) != 1 | is.na(x) == 1 | is.infinite(x) == 1 | x %% 1 != 0) {
+    return (0)
+  }
+  else {return (1)}
+}
+
+#creat a fuction "FizzBuzz" to describe the question correctly
+FizzBuzz <- function(x){
+    if (is.numeric(x) != 1) {
+    print("The input contains non-numeric values.")
+    }
+  else if (is.numeric(x) == 1){ 
+    for (i in x){
+      if (checkf(i) == 1){
+        finteger(i)
+      }
+     else if (checkf(i) == 0){
+       print("This is not an integer number")
+     } 
+    }
+  }
+}  
+
+```
+
+**Good input: all integer input (vector)**
+```{r}
+dat1 <- c(1:100)
+FizzBuzz(dat1)
+```
+
+**Good input: scalar integer input**
+```{r}
+FizzBuzz(3)
+FizzBuzz(5)
+FizzBuzz(15)
+```
+
+**Bad input: input contains non-numeric values**
+```{r}
+dat2 <- c(1, 2, 3, 4, 5, "a", 15) 
+FizzBuzz(dat2)
+```
+
+**Bad input: numeric input contains non-integer values**
+```{r}
+dat3 <- c(1, 2, 3, 4, 5, 5.4, 6, 6.5, 7, 7.8, 15)
+FizzBuzz(dat3)
+```
+
+
+**Implementation of "FizzBuzz" function **
+Generally, we need creat a fuction "FizzBuzz" to describe the requirements of this question correctly. 
+Before write the final "FizzBuzz" function, we need two basic functions to realize different aims. One is "finteger" function, which outputs the required results when giving valid inputing: if the input is a multible of both three and five, print "FizzBuzz"; if the number is a multible of five, print "Buzz"; if the number is a multible of three, print "Fizz"; for other numbers, print the original values. The other one is "checkf" function, which validates any numeric input and give a sane response to any invalid numeric input, for example, non-integeric number. 
+Then, we creat the "FizzBuzz" function. First, a **if** phrase is need to judge whether the input is numeric or not. If the input is not numeric, output **"The input contains non-numeric values"**. If the input is numeric, execute a **for** loop which chooses every input value in a list of numbers. Within the **for** loop, use **if** phrase and "checkf" function to judge whether the input is a integer input or not. If the numeric input is integer, use "finteger" function to realize the "FizzBuzz" classification; if the numeric input is not integer, print "This is not an integer number".
+
+## Q3.Rcpp
+Re-do FizzBuzz test using Rcpp.
+  
+```{r eval = FALSE}
+#write C++ code as a string into R
+library("Rcpp")
+fizzbuzz<-
+    '#include <Rcpp.h>
+  #include <iostream>
+  #include <vector>
+  using namespace Rcpp;
+  using namespace std;
+  // [[Rcpp::plugins("cpp11")]]
+  // [[Rcpp::export]]
+  void fizzbuzz(vector<int> numbers)
+  {
+  for(unsigned int j = 0; j < numbers.size(); j++) {
+  int number = numbers[j];
+  if( number%15 == 0) {
+  cout << "FizzBuzz" << endl; 
+  }
+  else if(number%5 == 0 ){
+  cout << "Buzz" << endl; 
+  }
+  else if(number%3 == 0) {
+  cout << "Fizz" << endl;
+  }
+  else {
+  cout<<number<< endl;
+  }
+ }
+}'
+
+#use Rcpp
+sourceCpp(code = fizzbuzz)
+
+#wirte fizzbuzz code which detect various input   
+FizzBuzzcpp <- function(x){
+    if (is.numeric(x) != 1) {
+    print("The input contains non-numeric values.")
+    }
+  else if (is.numeric(x) == 1){ 
+    for (i in x){
+      if (checkf(i) == 1){
+        cat(fizzbuzz(i))
+      }
+     else if (checkf(i) == 0){
+       print("This is not an integer number")
+     } 
+    }
+  }
+}  
+
+FizzBuzzcpp(1:100)
+
+```
+
+**Good input: all integer input in a vector**
+```{r}
+dat1 <- c(1:100)
+FizzBuzzcpp(dat1)
+```
+
+**Good input: scalar integer input**
+```{r}
+FizzBuzzcpp(3)
+FizzBuzzcpp(5)
+FizzBuzzcpp(15)
+```
+
+**Bad input: input contains non-numeric values**
+```{r}
+dat2 <- c(1, 2, 3, 4, 5, "a", 15) 
+FizzBuzzcpp(dat2)
+```
+
+**Bad input: numeric input contains non-integer values**
+```{r}
+dat3 <- c(1, 2, 3, 4, 5, 5.4, 6, 6.5, 7, 7.8, 15)
+FizzBuzzcpp(dat3)
+```
+
