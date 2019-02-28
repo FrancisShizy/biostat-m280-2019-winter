@@ -1,0 +1,81 @@
+---
+title: "HW3"
+author: "Zanyu Shi"
+date: "2/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Q1 LA City Employee Payroll
+1. For efficiency of the Shiny app, you should first pre-process, pare down, tidy, and save the data, e.g., as a compressed RDS file, to be used in the app.
+
+```{r}
+library(tidyverse)
+library(data.table)
+#read the .csv file
+LACEP <- fread("/home/m280data/la_payroll/City_Employee_Payroll.csv")
+LACEP = as.data.frame(LACEP)
+names(LACEP) <- str_remove_all(names(LACEP), "[\\&\\(\\)]")
+names(LACEP) <- str_replace_all(names(LACEP), " ", "_")
+names(LACEP) <- str_replace_all(names(LACEP), "__", "_")
+
+```
+
+Save The dataset as a RDS file.
+```{r}
+saveRDS(LACEP, file = "/home/zyshi/biostat-m280-2019-winter/hw3/LACEP.rds")
+```
+
+0. **Total payroll by LA City**. Visualize the total LA City payroll of each year, with breakdown into base pay, overtime pay, and other pay.
+
+**Solution**
+```{r}
+LACEPS <- LACEP %>%
+  group_by(Year) %>%
+  summarize(sumbp = sum(Base_Pay, na.rm = TRUE), 
+            sumoverp <- sum(Overtime_Pay, na.rm = TRUE),
+            sumbotherp <- sum(Other_Pay_Payroll_Explorer, na.rm = TRUE))
+names(LACEPS) <- c("Year", "Base_Pay", "Overtime_Pay", "Other_pay")
+LACEPS <- LACEPS %>% gather(Paytype, Payroll, -Year) %>%
+  mutate(pos =  0.6* Payroll)
+
+s <- ggplot(LACEPS, aes(x = Year, y = Payroll, fill = Paytype)) 
+s + geom_bar(stat = "identity") +  geom_text(aes(label = Payroll), 
+              position = position_stack(vjust = 0.5), size = 2) + 
+  labs(x="Year", y="Payroll", title="Total payroll by LA City")
+```
+
+
+
+0. **Who earned most?** Visualize the payroll information (total payment with breakdown into base pay, overtime pay, and other pay, Department, Job Title) of the top $n$ highest paid LA City employees in a specific year. User specifies $n$ (default 10) and year (default 2017).
+
+0. **Which departments earn most?** Visualize the mean or median payroll, with breakdown into base pay, overtime pay, and other pay, of top $n$ earning departments. User specifies $n$ (default 5), year (default 2017), and method (mean or median, default median).
+
+0. **Which departments cost most?** Visualize the total payroll, with breakdown into base pay, overtime pay, and other pay, of top $n$ expensive departments. User specifies $n$ (default 5) and year (default 2017).
+
+0. Visualize any other information you are interested in.
+
+0. Publish your Shiny app to <https://www.shinyapps.io> and share the link.
+
+## Q2 LA City Parking War
+
+The SQLite database `/home/m280data/la_parking/LA_Parking_Citations.sqlite` on teaching server contains information about parking tickets in LA City. It was downloaded from [LA Open Data Portal](https://data.lacity.org/A-Well-Run-City/Parking-Citations/wjz9-h9np). Connect to the database and answer following questions using plots and summary statistics. In this exercise, you are **not** allowed to load whole data into memory. Use the _transform in database, plot in R_ strategy.
+
+1. How many tickets are in this data set? Which time period do these tickets span? Which years have most data?
+
+0. When (which hour, weekday, month day, and month) are you most likely to get a ticket and when are you least likely to get a ticket?
+
+0. Which car makes received most citations?
+
+0. How many different colors of cars were ticketed? Which color attracted most tickets?
+
+0. What are the most common ticket types?
+
+0. How much money was collected on parking tickets in 2016, 2017 and 2018?
+
+0. If you've been ticketed in LA County, did you find your ticket in this data set?
+
+0. Read the blog <http://www.brettrics.com/9-million-parking-tickets-la/> and try to reproduce plots using your data.
