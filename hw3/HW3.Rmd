@@ -200,3 +200,59 @@ mcpt
 Opps, I don't have a car.
 
 8. Read the blog <http://www.brettrics.com/9-million-parking-tickets-la/> and try to reproduce plots using your data.
+
+#### 1. Plot Top 10 Ticket Types by Top 10 Car Make:
+```{r}
+library("ggplot2")
+lap_sql %>% 
+ filter(!is.na(Make), !is.na(Violation_Description)) %>%
+ filter(Make %in% c("TOYT", "HOND", "FORD", "NISS",	"CHEV", "BMW", "MERZ", 
+                    "VOLK", "HYUN",	"DODG")) %>%
+ filter(Violation_Description %in% c("NO PARK/STREET CLEAN",	"METER EXP.",	
+      "RED ZONE",	"PREFERENTIAL PARKING",	"DISPLAY OF TABS", "NO PARKING", 
+      "DISPLAY OF PLATES", "WHITE ZONE", "PARKED OVER TIME LIMIT", 
+      "NO STOP/STANDING"))  %>%        
+  ggplot(aes(Make, fill = Violation_Description)) +
+  geom_bar(position = "fill") +
+  labs(x="Car Make", y="Ticket Type", 
+       title="Top 10 Ticket Types by Top 10 Car Makes") + 
+   scale_y_continuous(labels=function(x) paste0(100*x,"%"))
+```
+
+#### 2. Plot the Number of Top 10 Ticket Types Per Day:
+
+```{r}
+dat <- lap_sql %>% 
+ filter(!is.na(Issue_Day), !is.na(Violation_Description)) %>%
+ filter(Violation_Description %in% c("NO PARK/STREET CLEAN",	"METER EXP.",	
+      "RED ZONE",	"PREFERENTIAL PARKING",	"DISPLAY OF TABS", "NO PARKING", 
+      "DISPLAY OF PLATES", "WHITE ZONE", "PARKED OVER TIME LIMIT", 
+      "NO STOP/STANDING"))  %>% 
+  group_by(Issue_Day, Violation_Description) %>%
+  summarize(n = n()) %>% 
+  collect()
+dat <- as.data.frame(dat)
+```
+
+```{r}
+dat1 <- spread(dat, key = Violation_Description, value = n)
+names(dat1) <- str_replace_all(names(dat1), "/", " ")
+names(dat1) <- str_replace_all(names(dat1), " ", "_")
+library("ggplot2")
+ggplot(dat1, aes(Issue_Day)) + 
+geom_line(aes(y = DISPLAY_OF_PLATES, colour = "DISPLAY_OF_PLATES")) + 
+geom_line(aes(y = DISPLAY_OF_TABS, colour = "DISPLAY_OF_TABS")) +
+geom_line(aes(y = METER_EXP., colour = "METER_EXP.")) +
+geom_line(aes(y = NO_PARK_STREET_CLEAN, colour = "NO_PARK/STREET_CLEAN")) +
+geom_line(aes(y = NO_PARKING, colour = "NO_PARKING")) +
+geom_line(aes(y = NO_STOP_STANDING, colour = "NO_STOP/STANDING")) +
+geom_line(aes(y = PARKED_OVER_TIME_LIMIT, colour = "PARKED_OVER_TIME_LIMIT")) +
+geom_line(aes(y = PREFERENTIAL_PARKING, colour = "PREFERENTIAL_PARKING")) +
+geom_line(aes(y = RED_ZONE, colour = "RED_ZONE")) +
+geom_line(aes(y = WHITE_ZONE, colour = "WHITE_ZONE")) +
+labs(x="Day of Month", y="Ticket Type", 
+     title="Number of Top 10 Ticket Types Per Day") + 
+scale_x_discrete(limits=c(1:31)) + 
+theme(axis.text.x = element_text(angle=45))
+```
+
