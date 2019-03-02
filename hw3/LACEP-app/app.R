@@ -16,7 +16,6 @@ ui <- fluidPage(
     
     # Sidebar panel for inputs ----
     sidebarPanel(
-      
       # Input: Selector for choosing year ----
       selectInput(inputId = "year",
                   label = "Choose a year of payroll:",
@@ -102,28 +101,32 @@ server <- function(input, output) {
   # Show the payroll information of the the mean or median payroll of top n earning departments  ----
   output$toppaidd <- renderTable({
     if (input$method == "mean"){
-       LACEPDE <- LACEP %>%
+      LACEPDE <- LACEP %>%
        filter(Year == input$year) %>%
        select(Department_Title, Total_Payments, 
              Base_Pay, Overtime_Pay, Other_Pay_Payroll_Explorer) %>% 
        group_by(Department_Title) %>%
-       summarise(Total_Payments = mean(Total_Payments, na.rm = T),
-                 Base_Pay = mean(Base_Pay, na.rm = T),
-                 Overtime_Pay = mean(Overtime_Pay, na.rm = T),
-                 Other_Pay = mean(Other_Pay_Payroll_Explorer, na.rm = T))
+       summarise(Mean_Total_Payments = mean(Total_Payments, na.rm = T),
+                Mean_Base_Pay = mean(Base_Pay, na.rm = T),
+                Mean_Overtime_Pay = mean(Overtime_Pay, na.rm = T),
+                Mean_Other_Pay = mean(Other_Pay_Payroll_Explorer, na.rm = T))
+      
+      head(arrange(LACEPDE, desc(Mean_Total_Payments)), n = input$topearn)
       }
-      else if (input$method == "median"){
-        LACEPDE <- LACEP %>%
-          filter(Year == input$year) %>%
-          select(Department_Title, Total_Payments, 
+    else if (input$method == "median"){
+    LACEPDE <- LACEP %>%
+      filter(Year == input$year) %>%
+      select(Department_Title, Total_Payments, 
                  Base_Pay, Overtime_Pay, Other_Pay_Payroll_Explorer) %>% 
-          group_by(Department_Title) %>%
-          summarise(Total_Payments = median(Total_Payments, na.rm = T),
-                 Base_Pay = median(Base_Pay, na.rm = T),
-                 Overtime_Pay = median(Overtime_Pay, na.rm = T),
-                 Other_Pay = median(Other_Pay_Payroll_Explorer, na.rm = T))  
+      group_by(Department_Title) %>%
+      summarise(Median_Total_Payments = median(Total_Payments, na.rm = T),
+            Median_Base_Pay = median(Base_Pay, na.rm = T),
+            Median_Overtime_Pay = median(Overtime_Pay, na.rm = T),
+            Median_Other_Pay = median(Other_Pay_Payroll_Explorer, na.rm = T))
+    
+      head(arrange(LACEPDE, desc(Median_Total_Payments)), n = input$topearn)
       }
-   head(arrange(LACEPDE, desc(Total_Payments)), n = input$topearn)
+   
   })
   
   # Show the payroll information of the total payroll of top n expensive departments  ----
@@ -133,13 +136,13 @@ server <- function(input, output) {
       select(Department_Title, Total_Payments, Base_Pay, Overtime_Pay,
              Other_Pay_Payroll_Explorer, Average_Benefit_Cost) %>%
        group_by(Department_Title) %>%
-       summarise( Cost = sum(Average_Benefit_Cost, na.rm = T), 
+       summarise(Total_Cost = sum(Average_Benefit_Cost, na.rm = T), 
                 Total_payments = sum(Total_Payments, na.rm = T),
                 Base_Pay = sum(Base_Pay, na.rm = T),
                 Overtime_Pay = sum(Overtime_Pay, na.rm = T),
                 Other_Pay = sum(Other_Pay_Payroll_Explorer, na.rm = T))  
 
-    head(arrange(LACEPDC, desc(Cost)), n = input$topexp)
+    head(arrange(LACEPDC, desc(Total_Cost)), n = input$topexp)
   })
   
 }

@@ -5,6 +5,6 @@ account: zyshi-shinyapps
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 751449
-bundleId: 1910285
+bundleId: 1910434
 url: https://zyshi-shinyapps.shinyapps.io/lacep-app/
-when: 1551488581.47454
+when: 1551501764.29634
