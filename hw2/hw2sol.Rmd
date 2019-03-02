@@ -87,35 +87,9 @@ Re-do FizzBuzz test using Rcpp.
 ```{r eval = FALSE}
 #write C++ code as a string into R
 library("Rcpp")
-fizzbuzz<-
-    '#include <Rcpp.h>
-  #include <iostream>
-  #include <vector>
-  using namespace Rcpp;
-  using namespace std;
-  // [[Rcpp::plugins("cpp11")]]
-  // [[Rcpp::export]]
-  void fizzbuzz(vector<int> numbers)
-  {
-  for(unsigned int j = 0; j < numbers.size(); j++) {
-  int number = numbers[j];
-  if( number%15 == 0) {
-  cout << "FizzBuzz" << endl; 
-  }
-  else if(number%5 == 0 ){
-  cout << "Buzz" << endl; 
-  }
-  else if(number%3 == 0) {
-  cout << "Fizz" << endl;
-  }
-  else {
-  cout<<number<< endl;
-  }
- }
-}'
 
 #use Rcpp
-sourceCpp(code = fizzbuzz)
+sourceCpp('fizzbuzz.cpp')
 
 #wirte fizzbuzz code which detect various input   
 FizzBuzzcpp <- function(x){
@@ -135,31 +109,6 @@ FizzBuzzcpp <- function(x){
 }  
 
 FizzBuzzcpp(1:100)
-
-```
-
-**Good input: all integer input in a vector**
-```{r}
-dat1 <- c(1:100)
-FizzBuzzcpp(dat1)
-```
-
-**Good input: scalar integer input**
-```{r}
-FizzBuzzcpp(3)
-FizzBuzzcpp(5)
-FizzBuzzcpp(15)
-```
-
-**Bad input: input contains non-numeric values**
-```{r}
-dat2 <- c(1, 2, 3, 4, 5, "a", 15) 
-FizzBuzzcpp(dat2)
-```
-
-**Bad input: numeric input contains non-integer values**
-```{r}
-dat3 <- c(1, 2, 3, 4, 5, 5.4, 6, 6.5, 7, 7.8, 15)
 FizzBuzzcpp(dat3)
-```
 
+```
